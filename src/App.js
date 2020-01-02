@@ -1,26 +1,44 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React from "react";
+import Canvas from "./component/Canvas"
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+const url = "https://cors-anywhere.herokuapp.com/https://twitter.com/Scriptbloxian"
+
+class App extends React.Component {
+
+  getTweets = async(e) => {
+    e.preventDefault();
+    const api_call = await fetch(url);
+    const data = await api_call.text();
+    console.log(data)
+  }
+
+  render() {
+    return (
+    <div>
+      <div className="row">
+        <div className="col-xs-6 canvas-container">
+          <Canvas></Canvas>
+        </div>
+      </div>
     </div>
-  );
+    );
+  }
 }
 
+function getTweets() {
+  fetch(url)
+  .then(function(response) {
+    return response.text()
+  })
+  .then(function(html){
+    var parser = new DOMParser();
+    var doc = parser.parseFromString(html, "text/html");
+
+    console.log(doc.querySelectorAll('li.stream-item')[0])
+  })
+}
+
+getTweets()
+
 export default App;
+
